@@ -37,7 +37,7 @@
             min-height: 100vh;
         }
 
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-family: 'Montserrat', sans-serif;
             color: var(--primary-color);
         }
@@ -101,93 +101,54 @@
         }
 
         /* -------------------------------------------
-           ESTILOS: APRESENTAÇÃO (SLIDES)
+           ESTILOS: APRESENTAÇÃO (ROLAGEM/SCROLL)
            ------------------------------------------- */
-        .slider-container {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            min-height: 60vh;
+        .scroll-container {
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            border-top: 6px solid var(--secondary-color);
+            gap: 2rem;
         }
 
-        .slide {
-            display: none;
+        .scroll-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             padding: 3rem;
-            flex-grow: 1;
+            border-top: 5px solid var(--secondary-color);
         }
 
-        .slide.active {
-            display: block;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .slide-title {
+        .scroll-section.cover {
             text-align: center;
-            font-size: 2rem;
-            margin-bottom: 2rem;
+            border-top: 8px solid var(--primary-color);
+            padding: 4rem 2rem;
+        }
+
+        .scroll-section h2 {
+            margin-bottom: 1.5rem;
             border-bottom: 2px solid var(--bg-color);
-            padding-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            font-size: 1.8rem;
         }
 
-        .slide-content {
-            font-size: 1.15rem;
+        .scroll-section p, .scroll-section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
         }
 
-        .slide-content ul {
+        .scroll-section ul {
             margin-left: 2rem;
             margin-bottom: 1.5rem;
         }
 
-        .slide-content li {
-            margin-bottom: 0.8rem;
-        }
-
         .math-block {
             background-color: #f4f6f9;
-            padding: 1rem;
+            padding: 1.5rem;
             border-left: 4px solid var(--secondary-color);
             border-radius: 4px;
             overflow-x: auto;
             margin: 1.5rem 0;
             text-align: center;
-        }
-
-        .slider-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 3rem;
-            background-color: #f8f9fa;
-            border-top: 1px solid #eee;
-        }
-
-        .btn-nav {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn-nav:hover { background-color: #003a75; }
-        .btn-nav:disabled { background-color: #ccc; cursor: not-allowed; }
-
-        .slide-counter {
-            font-weight: bold;
-            color: #666;
+            font-size: 1.1rem;
         }
 
         /* -------------------------------------------
@@ -255,6 +216,7 @@
             padding: 3rem;
             border-radius: var(--border-radius);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--primary-color);
         }
 
         .ref-item {
@@ -293,9 +255,8 @@
         }
 
         @media (max-width: 600px) {
-            .slide { padding: 1.5rem; }
-            .slide-title { font-size: 1.5rem; }
-            .slider-controls { padding: 1rem; }
+            .scroll-section { padding: 1.5rem; }
+            .scroll-section h2 { font-size: 1.5rem; }
             .chart-container { height: 50vh; min-height: 350px; }
             .ref-card { padding: 1.5rem; }
         }
@@ -305,7 +266,7 @@
 
     <nav>
         <div class="nav-container">
-            <div class="nav-item active" id="nav-apresentacao" onclick="openTab('apresentacao')">Apresentação</div>
+            <div class="nav-item active" id="nav-apresentacao" onclick="openTab('apresentacao')">Apresentação do Modelo</div>
             <div class="nav-item" id="nav-simulador" onclick="openTab('simulador')">Simulador Dinâmico</div>
             <div class="nav-item" id="nav-referencias" onclick="openTab('referencias')">Referências</div>
         </div>
@@ -314,111 +275,102 @@
     <div class="container">
         
         <section id="apresentacao" class="tab-content active">
-            <div class="slider-container">
+            <div class="scroll-container">
                 
-                <div class="slide active">
-                    <div style="text-align: center; margin-top: 5vh;">
-                        <h3 style="color: #666; margin-bottom: 1rem;">Universidade Estadual Paulista "Júlio de Mesquita Filho" (UNESP)</h3>
-                        <h4 style="color: #888; margin-bottom: 3rem;">Instituto de Geociências e Ciências Exatas - IGCE | Curso de Matemática</h4>
-                        
-                        <h1 style="font-size: 2.8rem; margin-bottom: 0.5rem;">Modelagem de Sistemas Dinâmicos na Citricultura</h1>
-                        <h2 style="color: var(--secondary-color); margin-bottom: 4rem;">Expansão de Área Produtiva via Equações de Diferenças</h2>
-                        
-                        <p style="font-size: 1.2rem; font-weight: bold;">Autores:</p>
-                        <p style="font-size: 1.1rem; color: #444;">Davi Correa Fontes, Igor Henrique Adão, Lucas Doná</p>
+                <div class="scroll-section cover">
+                    <h3 style="color: #666; margin-bottom: 0.5rem;">Universidade Estadual Paulista "Júlio de Mesquita Filho" (UNESP)</h3>
+                    <h4 style="color: #888; margin-bottom: 3rem;">Instituto de Geociências e Ciências Exatas - IGCE | Curso de Matemática</h4>
+                    
+                    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Modelagem de Sistemas Dinâmicos na Citricultura</h1>
+                    <h2 style="color: var(--secondary-color); margin-bottom: 3rem; border: none; padding: 0;">Expansão de Área Produtiva via Equações de Diferenças</h2>
+                    
+                    <p style="font-size: 1.2rem; font-weight: bold; margin-bottom: 0;">Autores:</p>
+                    <p style="font-size: 1.1rem; color: #444;">Davi Correa Fontes, Igor Henrique Adão, Lucas Doná</p>
+                </div>
+
+                <div class="scroll-section">
+                    <h2>1. O Paradoxo Temporal da Agricultura</h2>
+                    <p>A citricultura brasileira exige alto investimento de capital inicial, mas enfrenta um grave <strong>descompasso temporal (delay biológico)</strong>:</p>
+                    <ul>
+                        <li>Uma laranjeira recém-plantada leva cerca de <strong>3 anos</strong> para iniciar a fase reprodutiva comercial.</li>
+                        <li>Durante esse período, a nova terra atua como um sumidouro de capital, exigindo altos custos de manutenção (insumos, mão de obra) sem gerar nenhuma receita.</li>
+                        <li><strong>Nosso Objetivo:</strong> Modelar o fluxo de caixa de um citricultor que aplica uma <strong>regra de reinvestimento</strong>, destinando uma porcentagem fixa do seu lucro líquido para a compra contínua de novas terras, a fim de escalonar a produção.</li>
+                    </ul>
+                </div>
+
+                <div class="scroll-section">
+                    <h2>2. Definição dos Parâmetros</h2>
+                    <p>Os valores utilizados na modelagem baseiam-se em estimativas reais para a região interiorana de São Paulo, adotando-se o município de Mogi Mirim como referência de custos de terra e insumos:</p>
+                    <ul>
+                        <li><strong>N:</strong> 300 laranjeiras por hectare.</li>
+                        <li><strong>m:</strong> R$ 20,00 (Custo unitário da muda e plantio).</li>
+                        <li><strong>V:</strong> R$ 16.600,00 (Custo anual de manutenção por hectare, independente da planta gerar frutos ou não).</li>
+                        <li><strong>R:</strong> R$ 45.000,00 (Receita bruta gerada anualmente por hectare adulto/produtivo).</li>
+                        <li><strong>J:</strong> 1,1425 (Fator multiplicativo de juros, simulando a incidência da taxa Selic de 14,25% a.a.).</li>
+                        <li><strong>&alpha; (Alpha):</strong> 10% (Fração do saldo de caixa positivo destinada obrigatoriamente ao reinvestimento).</li>
+                        <li><strong>E:</strong> R$ 69.580,00 (Custo integral de expansão por hectare. Composto pela Terra Nua + implantação inicial das mudas).</li>
+                    </ul>
+                </div>
+
+                <div class="scroll-section">
+                    <h2>3. Estrutura Biológica (O Atraso)</h2>
+                    <p>Como as plantas não geram lucro imediatamente, é imprescindível rastrear a idade biológica de cada fração de hectare adquirida, avançando do ano \(t\) para \(t+1\):</p>
+                    
+                    <div class="math-block">
+                        \[
+                        \begin{cases}
+                            H_1(t+1) = H_0(t) \\
+                            H_2(t+1) = H_1(t) \\
+                            H_3(t+1) = H_2(t) \\
+                            H_p(t+1) = H_p(t) + H_3(t)
+                        \end{cases}
+                        \]
+                    </div>
+                    
+                    <p>A área total que demanda dinheiro e recursos financeiros para a sua manutenção anual é a soma de todos os estágios biológicos (dos recém-plantados aos adultos):</p>
+                    
+                    <div class="math-block">
+                        \[ H_{total}(t+1) = H_p(t+1) + \sum_{i=0}^{3} H_i(t+1) \]
                     </div>
                 </div>
 
-                <div class="slide">
-                    <h2 class="slide-title">1. O Paradoxo Temporal da Agricultura</h2>
-                    <div class="slide-content">
-                        <p>A citricultura brasileira exige alto investimento de capital inicial, mas enfrenta um grave <strong>descompasso temporal (delay biológico)</strong>:</p>
+                <div class="scroll-section">
+                    <h2>4. Balanço Financeiro e Reinvestimento</h2>
+                    <p>A atualização monetária baseia-se na conservação de capital. Primeiro, calculamos o <strong>Saldo Provisório (\(C_{temp}\))</strong> conservando o capital e aplicando os juros, receitas e despesas:</p>
+                    
+                    <div class="math-block">
+                        \[ C_{temp}(t+1) = C(t) \cdot J + H_p(t+1) \cdot R - H_{total}(t+1) \cdot V \]
+                    </div>
+
+                    <p>A estratégia de expansão exige que, na presença de lucro real, uma alíquota \(\alpha\) seja consumida para a compra de novas áreas. O modelo aplica uma função não linear (definida por partes):</p>
+                    
+                    <div class="math-block">
+                        \[
+                        \text{Se } C_{temp}(t+1) \le 0 \implies 
+                        \begin{cases}
+                            H_0(t+1) = 0 \\
+                            C(t+1) = C_{temp}(t+1)
+                        \end{cases}
+                        \]
                         <br>
-                        <ul>
-                            <li>Uma laranjeira recém-plantada leva cerca de <strong>3 anos</strong> para iniciar a fase reprodutiva comercial.</li>
-                            <li>Durante esse período, a nova terra atua como um sumidouro de capital, exigindo custos de manutenção sem gerar receita.</li>
-                            <li><strong>Nosso Objetivo:</strong> Modelar o fluxo de caixa de um citricultor que aplica uma <strong>regra de reinvestimento</strong>, destinando uma porcentagem do seu lucro líquido para a compra contínua de novas terras.</li>
-                        </ul>
+                        \[
+                        \text{Se } C_{temp}(t+1) > 0 \implies 
+                        \begin{cases}
+                            H_0(t+1) = \frac{\alpha \cdot C_{temp}(t+1)}{E} \\
+                            C(t+1) = (1 - \alpha) \cdot C_{temp}(t+1)
+                        \end{cases}
+                        \]
                     </div>
                 </div>
 
-                <div class="slide">
-                    <h2 class="slide-title">2. Definição dos Parâmetros</h2>
-                    <div class="slide-content">
-                        <p>Os valores utilizados na modelagem baseiam-se em estimativas reais para a região interiorana de São Paulo (Mogi Mirim):</p>
-                        <br>
-                        <ul>
-                            <li><strong>N:</strong> 300 laranjeiras por hectare.</li>
-                            <li><strong>m:</strong> R$ 20,00 (Custo unitário da muda e plantio).</li>
-                            <li><strong>V:</strong> R$ 16.600,00 (Manutenção anual exigida por todo e qualquer hectare, independente da idade).</li>
-                            <li><strong>R:</strong> R$ 45.000,00 (Receita bruta gerada anualmente por hectare adulto).</li>
-                            <li><strong>J:</strong> 1,1425 (Fator multiplicativo da Selic a 14,25% a.a.).</li>
-                            <li><strong>&alpha; (Alpha):</strong> 10% (Fração do saldo em caixa destinada ao reinvestimento).</li>
-                            <li><strong>E:</strong> R$ 69.580,00 (Custo integral para expandir a fazenda em 1 hectare: Terra Nua + Mudas).</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="slide">
-                    <h2 class="slide-title">3. Estrutura Biológica (O Atraso)</h2>
-                    <div class="slide-content">
-                        <p>Como as plantas não geram lucro imediatamente, rastreamos a idade biológica de cada fração de hectare adquirida, avançando do ano \(t\) para \(t+1\):</p>
-                        
-                        <div class="math-block">
-                            \[
-                            \begin{cases}
-                                H_1(t+1) = H_0(t) \\
-                                H_2(t+1) = H_1(t) \\
-                                H_3(t+1) = H_2(t) \\
-                                H_p(t+1) = H_p(t) + H_3(t)
-                            \end{cases}
-                            \]
-                        </div>
-                        
-                        <p>A área total que demanda dinheiro para manutenção é a soma de todos os estágios:</p>
-                        <div class="math-block">
-                            \[ H_{total}(t+1) = H_p(t+1) + \sum_{i=0}^{3} H_i(t+1) \]
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide">
-                    <h2 class="slide-title">4. Balanço Financeiro e Reinvestimento</h2>
-                    <div class="slide-content">
-                        <p>Primeiro, calculamos o <strong>Saldo Provisório (\(C_{temp}\))</strong> conservando o capital e aplicando os juros, receitas e despesas:</p>
-                        <div class="math-block">
-                            \[ C_{temp}(t+1) = C(t) \cdot J + H_p(t+1) \cdot R - H_{total}(t+1) \cdot V \]
-                        </div>
-
-                        <p>Se houver superávit, o modelo aplica a função não linear (definida por partes) para comprar terras:</p>
-                        <div class="math-block">
-                            \[
-                            \text{Se } C_{temp}(t+1) > 0 \implies 
-                            \begin{cases}
-                                H_0(t+1) = \frac{\alpha \cdot C_{temp}(t+1)}{E} \\
-                                C(t+1) = (1 - \alpha) \cdot C_{temp}(t+1)
-                            \end{cases}
-                            \]
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide">
-                    <h2 class="slide-title">5. Considerações Finais</h2>
-                    <div class="slide-content">
-                        <ul>
-                            <li><strong>O "Vale da Morte":</strong> A simulação matemática com 1 hectare financiado demonstra que a dívida acumula severamente até o ano 3 (R$ -66.184,32).</li>
-                            <li><strong>Amortização Estática:</strong> Do ano 4 ao ano 6, o saldo é passivo, o que significa que o produtor não tem capacidade de expandir, apenas de amortizar o capital inicial.</li>
-                            <li><strong>Crescimento Autossustentável:</strong> No ano 7, o sistema rompe a inércia (lucro) e realiza a primeira compra.</li>
-                            <li><strong>Impacto do Delay:</strong> Toda área nova derruba temporariamente a velocidade do lucro. Porém, superado o ciclo de 3 anos da nova safra, a equação de recorrência assume um padrão geométrico e escalar.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="slider-controls">
-                    <button class="btn-nav" id="btn-prev" onclick="changeSlide(-1)">&#8592; Anterior</button>
-                    <span class="slide-counter" id="slide-counter">1 / 6</span>
-                    <button class="btn-nav" id="btn-next" onclick="changeSlide(1)">Próximo &#8594;</button>
+                <div class="scroll-section">
+                    <h2>5. Considerações Finais</h2>
+                    <ul>
+                        <li><strong>O "Vale da Morte":</strong> A simulação matemática com 1 hectare inicialmente financiado demonstra que a dívida acumula severamente sob os juros até o 3º ano, atingindo o passivo máximo de R$ -66.184,32.</li>
+                        <li><strong>Amortização Estática:</strong> Do ano 4 (entrada da primeira receita) ao ano 6, o saldo se mantém passivo. O produtor não tem capacidade de expandir suas terras, focando apenas em amortizar o capital tomado.</li>
+                        <li><strong>Crescimento Autossustentável:</strong> Apenas no ano 7 o sistema rompe a inércia, gerando o primeiro lucro real e realizando a primeira compra automática de terras.</li>
+                        <li><strong>Impacto do Delay:</strong> O modelo revela que toda área nova derruba temporariamente a velocidade de crescimento do lucro líquido. Contudo, superado o ciclo vegetativo (3 anos), a nova safra transita para a maturidade, permitindo que a equação de recorrência assuma uma aceleração exponencial.</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -426,7 +378,7 @@
         <section id="simulador" class="tab-content">
             <div class="simulator-header">
                 <h2>Simulação Dinâmica Interativa</h2>
-                <p>Ajuste os parâmetros abaixo para simular o modelo e observe a curva de recuperação do caixa frente à expansão.</p>
+                <p>Ajuste os parâmetros abaixo para simular o modelo matemático e observe a curva gráfica de recuperação do caixa e de expansão fundiária.</p>
             </div>
 
             <div class="simulator-grid">
@@ -512,38 +464,20 @@
                 el.classList.remove('active');
             });
             
-            // Mostrar a aba alvo
+            // Mostrar a aba alvo e ativar menu
             document.getElementById(tabId).classList.add('active');
             document.getElementById('nav-' + tabId).classList.add('active');
 
-            // Se abrir o simulador, força a renderização para evitar bug visual do canvas
+            // Levar a tela para o topo
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Redimensionar gráfico se a aba do simulador for aberta
             if(tabId === 'simulador' && myChart !== null) {
                 myChart.resize();
             }
         }
 
-        // --- 2. Lógica do Carrossel de Slides ---
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        
-        function updateSliderUI() {
-            slides.forEach((s, i) => {
-                s.classList.toggle('active', i === currentSlide);
-            });
-            document.getElementById('slide-counter').innerText = `${currentSlide + 1} / ${slides.length}`;
-            
-            document.getElementById('btn-prev').disabled = currentSlide === 0;
-            document.getElementById('btn-next').disabled = currentSlide === slides.length - 1;
-        }
-
-        function changeSlide(direction) {
-            currentSlide += direction;
-            if (currentSlide < 0) currentSlide = 0;
-            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
-            updateSliderUI();
-        }
-
-        // --- 3. Lógica do Simulador Dinâmico ---
+        // --- 2. Lógica do Simulador Dinâmico ---
         let myChart = null;
 
         function rodarSimulacao() {
@@ -684,9 +618,8 @@
             });
         }
 
-        // --- 4. Inicialização ---
+        // --- 3. Inicialização ---
         window.onload = function() {
-            updateSliderUI();
             rodarSimulacao();
         };
     </script>
