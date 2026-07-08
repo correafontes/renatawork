@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelagem Dinâmica - Citricultura</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #004F9F; /* Azul UNESP */
+            --secondary-color: #E67E22; /* Laranja Citricultura */
+            --bg-color: #F8F9FA;
+            --text-color: #333333;
+            --card-bg: #FFFFFF;
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .institucional {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Seções e Cards */
+        section {
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .math-block {
+            background-color: #f4f6f9;
+            padding: 1rem;
+            border-left: 4px solid var(--secondary-color);
+            border-radius: 4px;
+            overflow-x: auto; /* Permite rolagem horizontal em celulares se a equação for longa */
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        /* Grid do Simulador */
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .controls {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .control-group {
+            margin-bottom: 1rem;
+        }
+
+        .control-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .control-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+        }
+
+        .btn-run {
+            width: 100%;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-run:hover {
+            background-color: #d67118;
+        }
+
+        .chart-wrapper {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+
+        /* Contêiner restritivo para forçar a altura do Chart.js no mobile */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            min-height: 400px; /* Garante que nunca fique espremido */
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 3rem;
+        }
+
+        /* ================= Responsividade ================= */
+        @media (max-width: 900px) {
+            .simulator-grid {
+                grid-template-columns: 1fr; /* Empilha os controles e o gráfico */
+            }
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 1.5rem 0.5rem;
+            }
+
+            .card, .controls, .chart-wrapper {
+                padding: 1.2rem;
+            }
+
+            .math-block {
+                font-size: 0.95rem; /* Evita quebra exagerada das equações na tela pequena */
+            }
+            
+            .chart-container {
+                height: 50vh;
+                min-height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Modelagem na Citricultura</h1>
+        <p>Sistemas Dinâmicos e Equações de Diferenças com Estrutura de Idades</p>
+        <div class="institucional">Curso de Matemática | Unesp Rio Claro</div>
+    </header>
+
+    <div class="container">
+        
+        <section id="teoria">
+            <div class="card">
+                <h2>O Paradoxo Temporal da Agricultura</h2>
+                <p>O agronegócio, especificamente a citricultura, enfrenta um fenômeno conhecido como <strong>descompasso temporal (delay biológico)</strong>. A injeção de capital inicial em terras e mudas não gera receita imediata. Uma laranjeira requer cerca de 3 anos de desenvolvimento vegetativo antes de iniciar a fase reprodutiva.</p>
+                <br>
+                <p>Para modelar o fluxo de caixa de um produtor que reinveste seu lucro em novas terras, criamos um sistema acoplado: um modelo biológico estruturado por idades (para as matrizes da lavoura) e uma equação de diferenças não linear definida por partes (para o controle de capital).</p>
+            </div>
+        </section>
+
+        <section id="equacoes">
+            <div class="card">
+                <h2>O Modelo Matemático</h2>
+                <p>A área física da propriedade evolui rastreando a idade biológica das plantas de um ano \( t \) para \( t+1 \):</p>
+                
+                <div class="math-block">
+                    \[
+                    \begin{cases}
+                        H_1(t+1) = H_0(t) \\
+                        H_2(t+1) = H_1(t) \\
+                        H_3(t+1) = H_2(t) \\
+                        H_p(t+1) = H_p(t) + H_3(t)
+                    \end{cases}
+                    \]
+                </div>
+
+                <p>A equação financeira avalia o Saldo Provisório \( C_{temp} \). Se houver superávit, o sistema aloca uma fração \( \alpha \) (taxa de reinvestimento) para a compra de novas terras \( H_0 \), pelo custo de expansão \( E \):</p>
+
+                <div class="math-block">
+                    \[ C_{temp}(t+1) = C(t) \cdot J + H_p(t+1) \cdot R - H_{total}(t+1) \cdot V \]
+                    <br>
+                    \[
+                    \text{Se } C_{temp} > 0 \implies 
+                    \begin{cases}
+                        H_0(t+1) = \frac{\alpha \cdot C_{temp}(t+1)}{E} \\
+                        C(t+1) = (1 - \alpha) \cdot C_{temp}(t+1)
+                    \end{cases}
+                    \]
+                </div>
+            </div>
+        </section>
+
+        <section id="simulador">
+            <h2>Simulação Dinâmica Interativa</h2>
+            <p style="margin-bottom: 1.5rem;">Ajuste os parâmetros econômicos abaixo para visualizar o comportamento do sistema dinâmico. O gráfico mapeia a recuperação do caixa e a expansão de novas áreas.</p>
+
+            <div class="simulator-grid">
+                
+                <div class="controls">
+                    <h3 style="margin-bottom: 1rem;">Parâmetros</h3>
+                    
+                    <div class="control-group">
+                        <label title="Custo inicial para o ano 0">Custo Plantio Inicial (R$):</label>
+                        <input type="number" id="inpCustoInit" value="6000" step="100">
+                    </div>
+
+                    <div class="control-group">
+                        <label title="Custo de manutenção anual por hectare">Manutenção (V - R$):</label>
+                        <input type="number" id="inpV" value="16600" step="100">
+                    </div>
+
+                    <div class="control-group">
+                        <label title="Receita gerada por Hectare produtivo">Receita (R - R$):</label>
+                        <input type="number" id="inpR" value="45000" step="500">
+                    </div>
+
+                    <div class="control-group">
+                        <label title="Fator Juros Selic (ex: 1.1425 para 14,25%)">Juros (J):</label>
+                        <input type="number" id="inpJ" value="1.1425" step="0.0001">
+                    </div>
+
+                    <div class="control-group">
+                        <label title="Taxa de reinvestimento sobre o lucro (0.10 = 10%)">Reinvestimento (&alpha;):</label>
+                        <input type="number" id="inpAlpha" value="0.10" step="0.01">
+                    </div>
+
+                    <div class="control-group">
+                        <label title="Custo da terra nua + plantio">Custo Expansão (E - R$):</label>
+                        <input type="number" id="inpE" value="69580" step="100">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Tempo de Simulação (Anos):</label>
+                        <input type="number" id="inpTempo" value="15" min="5" max="50">
+                    </div>
+
+                    <button class="btn-run" onclick="rodarSimulacao()">Executar Simulação</button>
+                </div>
+
+                <div class="chart-wrapper">
+                    <div class="chart-container">
+                        <canvas id="simChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Projeto Desenvolvido para a Disciplina de Equações de Diferenças</p>
+        <p style="font-size: 0.8rem; margin-top: 10px;">Instituto de Geociências e Ciências Exatas - IGCE / UNESP</p>
+    </footer>
+
+    <script>
+        let myChart = null;
+
+        function rodarSimulacao() {
+            const C_init = parseFloat(document.getElementById('inpCustoInit').value) * -1; 
+            const V = parseFloat(document.getElementById('inpV').value);
+            const R = parseFloat(document.getElementById('inpR').value);
+            const J = parseFloat(document.getElementById('inpJ').value);
+            const alpha = parseFloat(document.getElementById('inpAlpha').value);
+            const E = parseFloat(document.getElementById('inpE').value);
+            const maxYears = parseInt(document.getElementById('inpTempo').value);
+
+            let labels = [];
+            let dadosCaixa = [];
+            let dadosAreaProdutiva = [];
+            let dadosAreaNova = [];
+
+            let H0 = 1, H1 = 0, H2 = 0, H3 = 0, Hp = 0;
+            let C = C_init;
+
+            labels.push("Ano 0");
+            dadosCaixa.push(C);
+            dadosAreaProdutiva.push(Hp);
+            dadosAreaNova.push(H0);
+
+            for (let t = 1; t <= maxYears; t++) {
+                
+                let next_H1 = H0;
+                let next_H2 = H1;
+                let next_H3 = H2;
+                let next_Hp = Hp + H3;
+
+                let H_active = next_H1 + next_H2 + next_H3 + next_Hp; 
+
+                let C_temp = (C * J) + (next_Hp * R) - (H_active * V);
+
+                let next_H0 = 0;
+                let next_C = C_temp;
+
+                if (C_temp > 0) {
+                    next_H0 = (alpha * C_temp) / E;
+                    next_C = (1 - alpha) * C_temp;
+                }
+
+                H0 = next_H0;
+                H1 = next_H1;
+                H2 = next_H2;
+                H3 = next_H3;
+                Hp = next_Hp;
+                C = next_C;
+
+                labels.push("Ano " + t);
+                dadosCaixa.push(C);
+                dadosAreaProdutiva.push(Hp);
+                dadosAreaNova.push(H0);
+            }
+
+            atualizarGrafico(labels, dadosCaixa, dadosAreaProdutiva, dadosAreaNova);
+        }
+
+        function atualizarGrafico(labels, dadosCaixa, dadosAreaProdutiva, dadosAreaNova) {
+            const ctx = document.getElementById('simChart').getContext('2d');
+            
+            if (myChart != null) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Saldo em Caixa (R$)',
+                            data: dadosCaixa,
+                            borderColor: '#004F9F',
+                            backgroundColor: 'rgba(0, 79, 159, 0.1)',
+                            borderWidth: 3,
+                            yAxisID: 'y',
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 3, // Pontos menores no mobile
+                            pointHoverRadius: 5
+                        },
+                        {
+                            label: 'Área Produtiva (Hp)',
+                            data: dadosAreaProdutiva,
+                            type: 'bar',
+                            backgroundColor: 'rgba(230, 126, 34, 0.7)', 
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'Novas Aquisições (H0)',
+                            data: dadosAreaNova,
+                            type: 'bar',
+                            backgroundColor: 'rgba(46, 204, 113, 0.7)', 
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // <-- Essencial para fluidez no mobile
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolução Financeira e Expansão',
+                            font: { size: 14, family: 'Montserrat' } // Título sutilmente menor
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.datasetIndex === 0) {
+                                        label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                                    } else {
+                                        label += context.parsed.y.toFixed(4) + ' ha';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: false } // Oculta o título do eixo X para poupar espaço em telas pequenas
+                        },
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: false }, 
+                            grid: { drawOnChartArea: false },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    // Formata o dinheiro nos eixos do gráfico (abrevia em 'mil')
+                                    return 'R$ ' + (value / 1000) + 'k';
+                                },
+                                font: { size: 10 }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: false },
+                            grid: { drawOnChartArea: false },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return value + ' ha';
+                                },
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.onload = function() {
+            rodarSimulacao();
+        };
+    </script>
+</body>
+</html>
